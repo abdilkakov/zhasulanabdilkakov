@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteBoard | Premium Board Games</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --card-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--light); color: var(--dark); scroll-behavior: smooth; }
+
+        /* HEADER */
+        header {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
+            padding: 1.2rem 10%; display: flex; justify-content: space-between;
+            align-items: center; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .nav-links a { margin-left: 25px; text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.9rem; }
+
+        /* MODERN HERO SECTION */
+        .hero {
+            height: 100vh; background: #0f172a;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; padding: 0 10%;
+        }
+
+        .hero-bg-sphere {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%;
+            filter: blur(100px); z-index: 1; opacity: 0.5;
+        }
+        .sphere-1 { background: var(--primary); top: -150px; right: -100px; animation: move 15s infinite alternate; }
+        .sphere-2 { background: var(--secondary); bottom: -150px; left: -100px; animation: move 20s infinite alternate-reverse; }
+
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
+
+        .hero-glass-card {
+            position: relative; z-index: 10; background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px; border-radius: 40px; text-align: center; max-width: 850px;
+        }
+        .hero h1 {
+            font-size: 4.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 1.3rem; color: #cbd5e1; margin-bottom: 40px; font-weight: 300; }
+
+        .hero-btns { display: flex; gap: 20px; justify-content: center; }
+        .btn-glow {
+            padding: 18px 45px; background: var(--primary); color: white; border-radius: 50px;
+            text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+        }
+        .btn-glow:hover { transform: translateY(-5px); background: #5649c1; }
+
+        /* FILTERS */
+        .filters { padding: 60px 10% 20px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 12px 30px; border-radius: 50px; border: 1px solid #ddd;
+            background: var(--white); cursor: pointer; transition: 0.3s; font-weight: 600;
+        }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* CATALOG */
+        .catalog { padding: 40px 10% 100px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px; }
+        
+        .product-card {
+            background: var(--white); border-radius: 30px; padding: 20px;
+            transition: 0.4s; border: 1px solid transparent; box-shadow: var(--card-shadow);
+        }
+        .product-card:hover { transform: translateY(-15px); border-color: var(--primary); }
+        .product-card img { width: 100%; height: 280px; border-radius: 20px; object-fit: cover; }
+        .p-cat { font-size: 0.8rem; color: var(--primary); font-weight: 800; margin-top: 15px; display: block; }
+        .p-price { font-size: 1.5rem; font-weight: 800; margin: 10px 0; }
+
+        /* FOOTER & CONTACTS */
+        footer { background: var(--dark); color: white; padding: 80px 10% 40px; margin-top: 50px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 50px; margin-bottom: 60px; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; flex: 2; }
+        .contact-item { display: flex; gap: 15px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; }
+        .contact-text strong { display: block; font-size: 1.2rem; }
+        .contact-text a { color: var(--secondary); text-decoration: none; font-weight: 700; margin-top: 5px; display: inline-block; }
+
+        /* CART MODAL */
+        #cart-modal {
+            position: fixed; right: -450px; top: 0; width: 400px; height: 100%;
+            background: white; z-index: 2000; padding: 40px; transition: 0.5s;
+            box-shadow: -15px 0 50px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+        }
+        #cart-modal.active { right: 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo">ELITEBOARD</a>
+    <nav class="nav-links">
+        <a href="#hero">Басты бет</a>
+        <a href="#catalog">Каталог</a>
+        <button onclick="toggleCart()" style="background:var(--primary); color:white; border:none; padding:10px 25px; border-radius:50px; cursor:pointer; font-weight:700;">
+            Себет (<span id="count">0</span>)
+        </button>
+    </nav>
+</header>
+
+<section class="hero" id="hero">
+    <div class="hero-bg-sphere sphere-1"></div>
+    <div class="hero-bg-sphere sphere-2"></div>
+    <div class="hero-glass-card">
+        <h1>Ойын емес, <br>Нағыз Оқиға</h1>
+        <p>Достарыңыз бен отбасыңыз үшін үздік үстел ойындарының топтамасы.</p>
+        <div class="hero-btns">
+            <a href="#catalog" class="btn-glow">Дүкенді көру</a>
+        </div>
+    </div>
+</section>
+
+<div class="filters">
+    <button class="filter-btn active" onclick="filterData('all')">Барлығы</button>
+    <button class="filter-btn" onclick="filterData('стратегия')">Стратегия</button>
+    <button class="filter-btn" onclick="filterData('кеш')">Кештерге</button>
+    <button class="filter-btn" onclick="filterData('отбасылық')">Отбасылық</button>
+</div>
+
+<main class="catalog" id="catalog">
+    <div class="grid" id="product-grid"></div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div style="flex:1;">
+            <h2 style="color:var(--primary); margin-bottom:15px;">ELITEBOARD</h2>
+            <p style="opacity:0.6;">Біз сізге тек ойын емес, ерекше көңіл-күй сыйлаймыз.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div style="font-size:2rem;">👤</div>
+                <div class="contact-text">
+                    <strong>Дастан Тұрсынбеков</strong>
+                    <p style="opacity:0.6; font-size:0.8rem;">3 курс студенті</p>
+                    <a href="tel:+77472755406">+7 747 275 5406</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div style="font-size:2rem;">👤</div>
+                <div class="contact-text">
+                    <strong>Кожантаев Азамат</strong>
+                    <p style="opacity:0.6; font-size:0.8rem;">3 курс студенті</p>
+                    <a href="tel:+77477998610">+7 747 799 8610</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center; opacity:0.3; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+        © 2025 EliteBoard Shop. Барлық құқықтар қорғалған.
+    </div>
+</footer>
+
+<div id="cart-modal">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <h2>Себет</h2>
+        <button onclick="toggleCart()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-items" style="flex:1; overflow-y:auto;"></div>
+    <div style="padding-top:20px; border-top:2px solid #eee;">
+        <h3>Жалпы: <span id="total">0</span> ₸</h3>
+        <button style="width:100%; padding:18px; background:var(--primary); color:white; border:none; border-radius:15px; margin-top:20px; font-weight:700; cursor:pointer;">Тапсырыс беру</button>
+    </div>
+</div>
+
+<script>
+    const products = [
+        { id: 1, name: "Catan: Колонизаторлар", price: 18500, cat: "стратегия", img: "https://images.unsplash.com/photo-1611891487122-207579d67d98?w=500" },
+        { id: 2, name: "Монополия Deluxe", price: 15500, cat: "отбасылық", img: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=400" },
+        { id: 3, name: "Dixit: Odyssey", price: 14200, cat: "кеш", img: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=400" },
+        { id: 4, name: "Terraforming Mars", price: 29000, cat: "стратегия", img: "https://images.unsplash.com/photo-1629752187687-3d3c7ea3a21b?w=400" },
+        { id: 5, name: "Exploding Kittens", price: 7500, cat: "кеш", img: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=400" },
+        { id: 6, name: "Ticket to Ride", price: 23500, cat: "отбасылық", img: "https://images.unsplash.com/photo-1590159441315-99889608f430?w=400" }
+    ];
+
+    let cart = [];
+
+    function render(data) {
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = '';
+        data.forEach(p => {
+            grid.innerHTML += `
+                <div class="product-card">
+                    <img src="${p.img}">
+                    <span class="p-cat">${p.cat}</span>
+                    <h3>${p.name}</h3>
+                    <p class="p-price">${p.price.toLocaleString()} ₸</p>
+                    <button onclick="addToCart(${p.id})" style="width:100%; border:none; padding:12px; border-radius:12px; background:var(--dark); color:white; font-weight:700; cursor:pointer; transition:0.3s;">Себетке +</button>
+                </div>
+            `;
+        });
+    }
+
+    function filterData(category) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        const filtered = category === 'all' ? products : products.filter(p => p.cat === category);
+        render(filtered);
+    }
+
+    function addToCart(id) {
+        const p = products.find(i => i.id === id);
+        cart.push(p);
+        updateCart();
+    }
+
+    function updateCart() {
+        document.getElementById('count').innerText = cart.length;
+        const list = document.getElementById('cart-items');
+        let total = 0;
+        list.innerHTML = '';
+        cart.forEach((item, idx) => {
+            total += item.price;
+            list.innerHTML += `<div class="cart-item">
+                <span>${item.name}</span>
+                <b>${item.price.toLocaleString()} ₸</b>
+            </div>`;
+        });
+        document.getElementById('total').innerText = total.toLocaleString();
+    }
+
+    function toggleCart() {
+        document.getElementById('cart-modal').classList.toggle('active');
+    }
+
+    render(products);
+</script>
+</body>
+</html>
